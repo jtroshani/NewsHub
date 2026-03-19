@@ -144,6 +144,7 @@ select {
 }
 
 .stat-card--visual {
+  padding-top: 18px;
   padding-bottom: 0;
 }
 
@@ -168,23 +169,7 @@ select {
   line-height: 1.5;
 }
 
-.daily-visual__header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.daily-visual__note {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.88rem;
-  line-height: 1.4;
-}
-
 .daily-visual {
-  margin-top: 14px;
   border: 1px solid #e6e6e1;
   background: linear-gradient(180deg, #ffffff 0%, #fcfcfa 100%);
   aspect-ratio: 1.5 / 1;

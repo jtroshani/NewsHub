@@ -20,7 +20,6 @@ const articleCount = document.getElementById("article-count");
 const sourceCount = document.getElementById("source-count");
 const lastUpdated = document.getElementById("last-updated");
 const dailyVisual = document.getElementById("daily-visual");
-const dailyVisualNote = document.getElementById("daily-visual-note");
 const resultsSummary = document.getElementById("results-summary");
 const categoryFilters = document.getElementById("category-filters");
 const categoryOverview = document.getElementById("category-overview");
@@ -99,14 +98,6 @@ function getLocalDayKey(date = new Date()) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
-}
-
-function formatVisualDate(dayKey) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(`${dayKey}T12:00:00`));
 }
 
 function buildDailyVisualSvg(items, dayKey) {
@@ -233,10 +224,6 @@ function renderDailyVisual() {
 
   const dayKey = getLocalDayKey();
   dailyVisual.innerHTML = buildDailyVisualSvg(state.items, dayKey);
-
-  if (dailyVisualNote) {
-    dailyVisualNote.textContent = `Daily composition for ${formatVisualDate(dayKey)}`;
-  }
 }
 
 function scheduleDailyVisualRefresh() {
