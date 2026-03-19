@@ -143,6 +143,10 @@ select {
   grid-column: 1 / -1;
 }
 
+.stat-card--visual {
+  padding-bottom: 0;
+}
+
 .stat-card__label {
   margin: 0 0 6px;
   color: var(--muted);
@@ -162,6 +166,36 @@ select {
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.5;
+}
+
+.daily-visual__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.daily-visual__note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.daily-visual {
+  margin-top: 14px;
+  border: 1px solid #e6e6e1;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfcfa 100%);
+  aspect-ratio: 1.5 / 1;
+  min-height: 190px;
+  overflow: hidden;
+}
+
+.daily-visual svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .section-heading {
