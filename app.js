@@ -203,7 +203,7 @@ function buildDailyVisualSvg(items, dayKey) {
     .join("");
 
   return `
-    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Daily abstract visual for higher education AI news">
+    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Today's visual composition">
       <rect x="0" y="0" width="${width}" height="${height}" fill="#fefefd" />
       <rect x="16" y="16" width="${width - 32}" height="${height - 32}" fill="none" stroke="#ecece6" stroke-width="1" />
       ${backgroundCircles}
