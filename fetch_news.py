@@ -15,6 +15,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_PATH = ROOT / "news.json"
+SCRIPT_OUTPUT_PATH = ROOT / "news-data.js"
 MAX_ITEMS = 42
 MAX_ITEMS_PER_SOURCE = 10
 MAX_AGE_DAYS = 210
@@ -416,6 +417,10 @@ def write_news(items: list[dict[str, str]], errors: list[dict[str, str]]) -> Non
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    SCRIPT_OUTPUT_PATH.write_text(
+        f"window.__NEWS_HUB_DATA__ = {json.dumps(payload, separators=(',', ':'))};\n",
+        encoding="utf-8",
+    )
 
 
 def main() -> int:

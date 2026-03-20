@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-19T21:38:09.593541Z",
-  "itemCount": 19,
-  "sourceCount": 3,
+  "generatedAt": "2026-03-20T12:29:56.856730Z",
+  "itemCount": 21,
+  "sourceCount": 5,
   "sources": [
     "EdScoop",
     "EdTech Magazine",
@@ -12,6 +12,26 @@
   ],
   "errors": [],
   "items": [
+    {
+      "id": "f9fff4320e9e",
+      "headline": "For AI Help, More College Students Ask Social Media First",
+      "summary": "For AI Help, More College Students Ask Social Media First kathryn.palmer\u2026 Fri, 03/20/2026 - 03:00 AM Byline(s) Kathryn Palmer",
+      "source": "Inside Higher Ed",
+      "sourceDomain": "insidehighered.com",
+      "publishedAt": "2026-03-20T07:00:00Z",
+      "category": "Tools and Innovation",
+      "url": "https://www.insidehighered.com/news/quick-takes/2026/03/20/ai-help-more-college-students-ask-social-media-first"
+    },
+    {
+      "id": "3427f5905085",
+      "headline": "Here\u2019s how a new AI-driven \u201carms race\u201d has snarled cybersecurity",
+      "summary": "As bad actors use AI to scale attacks, universities are fighting fire with fire to stay one step ahead.",
+      "source": "University Business",
+      "sourceDomain": "universitybusiness.com",
+      "publishedAt": "2026-03-20T05:00:10Z",
+      "category": "Administration and Operations",
+      "url": "https://universitybusiness.com/heres-how-a-new-ai-driven-arms-race-has-snarled-cybersecurity/"
+    },
     {
       "id": "bd0847331f4d",
       "headline": "Applying AI Risk Frameworks in Higher Education: What IT Leaders Need to Know",

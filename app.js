@@ -27,6 +27,7 @@ const emptyState = document.getElementById("empty-state");
 const cardTemplate = document.getElementById("news-card-template");
 const searchInput = document.getElementById("search-input");
 const sortSelect = document.getElementById("sort-select");
+const fallbackFeedData = window.__NEWS_HUB_DATA__;
 let dailyVisualRefreshTimeout;
 
 function formatDate(isoDate) {
@@ -349,6 +350,34 @@ function renderSummary(items) {
   } from ${visibleSources} source${visibleSources === 1 ? "" : "s"} in ${categoryLabel}.`;
 }
 
+function clearFeedUi() {
+  state.items = [];
+  state.generatedAt = null;
+  categoryFilters.replaceChildren();
+  newsGrid.replaceChildren();
+}
+
+function applyFeedData(data) {
+  const items = Array.isArray(data?.items) ? data.items : [];
+
+  if (items.length === 0) {
+    throw new Error("Feed payload does not contain any items.");
+  }
+
+  state.items = items;
+  state.generatedAt = data.generatedAt ?? null;
+  setHeaderStats({ ...data, items });
+  render();
+}
+
+function getFeedRequestUrl() {
+  const now = new Date();
+  const sixHourBucket = Math.floor(now.getTime() / (6 * 60 * 60 * 1000));
+  const url = new URL("news.json", window.location.href);
+  url.searchParams.set("v", String(sixHourBucket));
+  return url.toString();
+}
+
 function render() {
   const visibleItems = getVisibleItems();
 
@@ -367,30 +396,37 @@ function setHeaderStats(data) {
 }
 
 function showError(message) {
+  clearFeedUi();
   articleCount.textContent = "0";
   sourceCount.textContent = "0";
   lastUpdated.textContent = message;
   resultsSummary.textContent = message;
-  newsGrid.replaceChildren();
   renderDailyVisual();
   emptyState.hidden = false;
 }
 
 async function loadFeed() {
   try {
-    const response = await fetch("news.json", { cache: "no-store" });
+    const response = await fetch(getFeedRequestUrl(), { cache: "no-store" });
 
     if (!response.ok) {
       throw new Error(`Feed request failed with status ${response.status}`);
     }
 
     const data = await response.json();
-    state.items = Array.isArray(data.items) ? data.items : [];
-    state.generatedAt = data.generatedAt;
-    setHeaderStats(data);
-    render();
+    applyFeedData(data);
   } catch (error) {
     console.error(error);
+
+    if (fallbackFeedData?.items?.length) {
+      try {
+        applyFeedData(fallbackFeedData);
+        return;
+      } catch (fallbackError) {
+        console.error(fallbackError);
+      }
+    }
+
     showError("The latest feed could not be loaded.");
   }
 }
