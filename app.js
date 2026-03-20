@@ -22,7 +22,6 @@ const lastUpdated = document.getElementById("last-updated");
 const dailyVisual = document.getElementById("daily-visual");
 const resultsSummary = document.getElementById("results-summary");
 const categoryFilters = document.getElementById("category-filters");
-const categoryOverview = document.getElementById("category-overview");
 const newsGrid = document.getElementById("news-grid");
 const emptyState = document.getElementById("empty-state");
 const cardTemplate = document.getElementById("news-card-template");
@@ -277,27 +276,6 @@ function getVisibleItems() {
   });
 }
 
-function renderOverview() {
-  const counts = getCategoryCounts(state.items);
-  categoryOverview.replaceChildren();
-
-  CATEGORY_ORDER.slice(1).forEach((category) => {
-    const card = document.createElement("article");
-    card.className = "overview-card";
-
-    const count = document.createElement("p");
-    count.className = "overview-card__count";
-    count.textContent = counts[category];
-
-    const label = document.createElement("p");
-    label.className = "overview-card__label";
-    label.textContent = category;
-
-    card.append(count, label);
-    categoryOverview.append(card);
-  });
-}
-
 function renderFilters() {
   const counts = getCategoryCounts(state.items);
   categoryFilters.replaceChildren();
@@ -375,7 +353,6 @@ function render() {
   const visibleItems = getVisibleItems();
 
   renderFilters();
-  renderOverview();
   renderSummary(visibleItems);
   renderCards(visibleItems);
   renderDailyVisual();

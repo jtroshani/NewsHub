@@ -206,7 +206,6 @@ select {
 }
 
 .controls,
-.overview,
 .feed,
 .footer {
   padding: 26px 24px;
@@ -306,35 +305,6 @@ select {
   margin-left: 6px;
   color: inherit;
   opacity: 0.78;
-}
-
-.overview {
-  margin-bottom: 28px;
-}
-
-.overview__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-}
-
-.overview-card {
-  padding: 16px;
-  background: #ffffff;
-  border: 1px solid var(--border);
-}
-
-.overview-card__count {
-  margin: 0 0 8px;
-  font-family: var(--font-display);
-  font-size: 1.95rem;
-  line-height: 1;
-}
-
-.overview-card__label {
-  margin: 0;
-  color: var(--muted);
-  font-weight: 600;
 }
 
 .news-grid {
