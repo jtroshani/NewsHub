@@ -5,6 +5,7 @@ import json
 import re
 import sys
 import xml.etree.ElementTree as ET
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from html import unescape
@@ -381,13 +382,21 @@ def collect_news() -> tuple[list[dict[str, str]], list[dict[str, str]]]:
     all_items: list[dict[str, str]] = []
     errors: list[dict[str, str]] = []
 
-    for feed in FEEDS:
+    def fetch_one(feed: dict[str, object]) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
         try:
             items = load_feed(feed, now)
             items.sort(key=lambda item: item["publishedAt"], reverse=True)
-            all_items.extend(items[:MAX_ITEMS_PER_SOURCE])
+            return items[:MAX_ITEMS_PER_SOURCE], []
         except (HTTPError, URLError, TimeoutError, ET.ParseError) as error:
-            errors.append({"source": str(feed["name"]), "message": str(error)})
+            return [], [{"source": str(feed["name"]), "message": str(error)}]
+
+    max_workers = min(len(FEEDS), 8)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(fetch_one, feed): feed for feed in FEEDS}
+        for future in as_completed(futures):
+            batch, batch_errors = future.result()
+            all_items.extend(batch)
+            errors.extend(batch_errors)
 
     deduped: list[dict[str, str]] = []
     seen: set[str] = set()

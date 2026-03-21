@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-03-20T12:29:56.856730Z",
-  "itemCount": 21,
+  "generatedAt": "2026-03-21T12:09:19.892665Z",
+  "itemCount": 19,
   "sourceCount": 5,
   "sources": [
     "EdScoop",
@@ -201,26 +201,6 @@
       "publishedAt": "2026-01-08T18:30:00Z",
       "category": "Teaching and Learning",
       "url": "https://campustechnology.com/Articles/2026/01/08/3-Ed-Tech-Shifts-That-Will-Define-2026.aspx"
-    },
-    {
-      "id": "ddbea5a331ce",
-      "headline": "Oregon Tech Partners with Google Public Sector to Advance Student and Faculty Research",
-      "summary": "Oregon Institute of Technology recently announced it is collaborating with Google Public Sector to implement Google Cloud's AI and high-performance computing across the institution.",
-      "source": "Campus Technology",
-      "sourceDomain": "campustechnology.com",
-      "publishedAt": "2025-12-15T19:28:00Z",
-      "category": "Research",
-      "url": "https://campustechnology.com/Articles/2025/12/15/Oregon-Tech-Partners-with-Google-Public-Sector-to-Advance-Student-and-Faculty-Research.aspx"
-    },
-    {
-      "id": "d65b280eb20e",
-      "headline": "ASU Teams Up with Grammarly to Deploy Agentic AI Assistant",
-      "summary": "Arizona State University recently partnered with Grammarly to integrate agentic AI into teaching and learning, becoming the first university to deploy Grammarly's Superhuman Go AI platform.",
-      "source": "Campus Technology",
-      "sourceDomain": "campustechnology.com",
-      "publishedAt": "2025-12-11T19:48:00Z",
-      "category": "Teaching and Learning",
-      "url": "https://campustechnology.com/Articles/2025/12/11/ASU-Teams-Up-with-Grammarly-to-Deploy-Agentic-AI-Assistant.aspx"
     }
   ]
 }
