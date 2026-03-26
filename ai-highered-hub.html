@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI in Higher Ed Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f1f5f9;
+      --surface:   #ffffff;
+      --surface2:  #f8fafc;
+      --border:    #e2e8f0;
+      --border2:   #cbd5e1;
+      --text-1:    #0f172a;
+      --text-2:    #334155;
+      --text-3:    #64748b;
+      --text-4:    #94a3b8;
+      --accent:    #1d4ed8;
+      --accent-lt: #dbeafe;
+      --header-bg: #0f172a;
+      --header-txt:#e2e8f0;
+
+      --cat-research: #2563eb;
+      --cat-research-bg: #eff6ff;
+      --cat-reports:  #0891b2;
+      --cat-reports-bg: #ecfeff;
+      --cat-frameworks: #7c3aed;
+      --cat-frameworks-bg: #f5f3ff;
+      --cat-resources: #059669;
+      --cat-resources-bg: #ecfdf5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--header-bg);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 0 0.5rem;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .brand-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-name span {
+      color: #60a5fa;
+    }
+
+    .brand-sub {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 400;
+      max-width: 480px;
+      line-height: 1.35;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .entry-count {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #94a3b8;
+      background: rgba(255,255,255,0.07);
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      white-space: nowrap;
+    }
+
+    .refresh-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .refresh-badge svg {
+      width: 12px;
+      height: 12px;
+      stroke: #64748b;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 640px) {
+      .refresh-badge { display: none; }
+    }
+
+    /* ── SEARCH + FILTERS ── */
+    .controls {
+      padding: 0.6rem 0 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      stroke: #64748b;
+      flex-shrink: 0;
+    }
+
+    #search {
+      width: 100%;
+      padding: 0.55rem 0.9rem 0.55rem 2.2rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      font-family: inherit;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+
+    #search::placeholder { color: #64748b; }
+
+    #search:focus {
+      border-color: rgba(96,165,250,0.5);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .filters {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+      flex-shrink: 0;
+    }
+
+    .filter-btn:hover {
+      border-color: rgba(96,165,250,0.4);
+      color: #e2e8f0;
+    }
+
+    .filter-btn.active {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(29,78,216,0.4);
+    }
+
+    .filter-btn .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.75rem 1.5rem 2rem;
+    }
+
+    .results-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .results-label {
+      font-size: 0.78rem;
+      color: var(--text-3);
+      font-weight: 500;
+    }
+
+    .results-label strong {
+      color: var(--text-2);
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.1rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.35rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      cursor: default;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+      border-color: #93c5fd;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+
+    .cat-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    .cat-tag.research   { background: var(--cat-research-bg);   color: var(--cat-research); }
+    .cat-tag.reports    { background: var(--cat-reports-bg);    color: var(--cat-reports); }
+    .cat-tag.frameworks { background: var(--cat-frameworks-bg); color: var(--cat-frameworks); }
+    .cat-tag.resources  { background: var(--cat-resources-bg);  color: var(--cat-resources); }
+
+    .card-date {
+      font-size: 0.7rem;
+      color: var(--text-4);
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    .card-source {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-3);
+      letter-spacing: 0.04em;
+    }
+
+    .card-title {
+      font-size: 0.93rem;
+      font-weight: 700;
+      color: var(--text-1);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-summary {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 0.1rem;
+    }
+
+    .read-link {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #1d4ed8;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: gap 0.15s ease, color 0.15s ease;
+    }
+
+    .read-link:hover {
+      color: #1e40af;
+      gap: 0.45rem;
+    }
+
+    .read-link svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-3);
+    }
+
+    .empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .empty h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-2);
+      margin-bottom: 0.35rem;
+    }
+
+    .empty p {
+      font-size: 0.85rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .footer-note {
+      font-size: 0.72rem;
+      color: var(--text-4);
+    }
+
+    .footer-note a {
+      color: var(--text-3);
+      text-decoration: none;
+    }
+
+    .footer-note a:hover { text-decoration: underline; }
+
+    .last-updated {
+      font-size: 0.72rem;
+      color: var(--text-4);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .header-top { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .header-meta { width: 100%; }
+      .entry-count { width: 100%; text-align: center; }
+      .grid { grid-template-columns: 1fr; }
+      .brand-sub { display: none; }
+      main { padding: 1.25rem 1rem 2rem; }
+      footer { padding: 1.25rem 1rem; }
+      .header-inner { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════ HEADER ════════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-name">AI in <span>Higher Ed</span> Hub</div>
+        <div class="brand-sub">Research, Frameworks &amp; Resources on AI in Higher Education, AI Literacy, and Student Learning with AI</div>
+      </div>
+      <div class="header-meta">
+        <div class="refresh-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Refreshes in <span id="countdown">6:00:00</span>
+        </div>
+        <div class="entry-count" id="entryCount">20 entries</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="search" id="search" placeholder="Search titles, sources, summaries…" autocomplete="off" />
+      </div>
+
+      <div class="filters" role="group" aria-label="Category filters">
+        <button class="filter-btn active" data-cat="all">All</button>
+        <button class="filter-btn" data-cat="research">
+          <span class="dot" style="background:#2563eb"></span>Research Articles
+        </button>
+        <button class="filter-btn" data-cat="reports">
+          <span class="dot" style="background:#0891b2"></span>Reports
+        </button>
+        <button class="filter-btn" data-cat="frameworks">
+          <span class="dot" style="background:#7c3aed"></span>Frameworks
+        </button>
+        <button class="filter-btn" data-cat="resources">
+          <span class="dot" style="background:#059669"></span>Resources
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════ MAIN ════════════════════════════════ -->
+<main>
+  <div class="results-bar">
+    <div class="results-label" id="resultsLabel">Showing <strong id="visibleCount">20</strong> entries</div>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<!-- ════════════════════════════════ FOOTER ════════════════════════════════ -->
+<footer>
+  <div class="footer-note">
+    Curated for educators, researchers, and institutional leaders in higher education. Sources link to original publications — no content is hosted here.
+  </div>
+  <div class="last-updated">
+    <span class="status-dot"></span>
+    Last updated: March 26, 2025
+  </div>
+</footer>
+
+<!-- ════════════════════════════════ DATA + LOGIC ════════════════════════════════ -->
+<script>
+const CAT_LABELS = {
+  research:   'Research Article',
+  reports:    'Report',
+  frameworks: 'Framework',
+  resources:  'Resource',
+};
+
+const data = [
+  // ── RESEARCH ARTICLES ────────────────────────────────────────────────────
+  {
+    id: 1,
+    title: "Generative AI and the Future of Higher Education",
+    source: "EDUCAUSE Review",
+    date: "2023-05-15",
+    category: "research",
+    summary: "Examines how large language models and generative AI tools are reshaping pedagogical practices, faculty roles, and institutional policy in colleges and universities. Addresses both the transformative potential and the risks — including academic integrity challenges — that institutions must proactively navigate. Offers a practical framework for responsible adoption at the course and department level.",
+    url: "https://er.educause.edu/articles/2023/5/generative-ai-and-the-future-of-higher-education"
+  },
+  {
+    id: 2,
+    title: "Rethinking Assessment in the Age of Artificial Intelligence",
+    source: "Harvard Graduate School of Education",
+    date: "2023-08-10",
+    category: "research",
+    summary: "Argues that AI tools like ChatGPT expose longstanding weaknesses in how higher education assesses learning, and that institutions must shift toward authentic, process-oriented tasks that cannot be easily outsourced to AI. Proposes a set of assessment redesign principles grounded in cognitive science and equitable pedagogy. Draws on case examples from faculty across disciplines who have already adapted their evaluations.",
+    url: "https://www.gse.harvard.edu/ideas/usable-knowledge/23/08/rethinking-assessment-age-artificial-intelligence"
+  },
+  {
+    id: 3,
+    title: "Students' Use of ChatGPT in University Courses: Systematic Literature Review",
+    source: "Computers & Education: AI",
+    date: "2024-03-01",
+    category: "research",
+    summary: "Synthesizes findings from 42 empirical studies on how undergraduate and graduate students are using ChatGPT for coursework, research, and writing assistance. Identifies key motivational factors, reported benefits, and academic integrity concerns raised by both students and instructors. Concludes with a research agenda for understanding long-term learning outcomes in AI-assisted academic environments.",
+    url: "https://www.sciencedirect.com/journal/computers-and-education-artificial-intelligence"
+  },
+  {
+    id: 4,
+    title: "Faculty Perspectives on AI in Teaching and Learning: A National Survey",
+    source: "Inside Higher Ed",
+    date: "2024-01-25",
+    category: "research",
+    summary: "Reports findings from a nationally representative survey of over 2,400 college and university faculty examining their attitudes toward generative AI in the classroom. Reveals significant variation by discipline, institution type, and faculty rank in comfort levels, preparedness, and policy preferences. Highlights a gap between faculty interest in AI pedagogical training and the institutional support currently available.",
+    url: "https://www.insidehighered.com/news/survey/instructors-say-they-want-teach-ai-tools-dont-know-how"
+  },
+  {
+    id: 5,
+    title: "Ethical Considerations for AI Use in Higher Education Pedagogy",
+    source: "Journal of Higher Education Policy & Management",
+    date: "2024-06-12",
+    category: "research",
+    summary: "Explores ethical dimensions of integrating AI into university teaching, including questions of equity, data privacy, transparency, and the erosion of critical thinking skills. Reviews existing institutional AI policies across 30 universities and finds significant inconsistency in how ethical principles are operationalized. Proposes a tiered ethical review process for AI-assisted course design.",
+    url: "https://www.tandfonline.com/journals/cjhe20"
+  },
+
+  // ── REPORTS ──────────────────────────────────────────────────────────────
+  {
+    id: 6,
+    title: "2024 EDUCAUSE Horizon Report: Teaching and Learning Edition",
+    source: "EDUCAUSE",
+    date: "2024-05-06",
+    category: "reports",
+    summary: "The flagship annual horizon report identifies AI as the defining technology trend shaping teaching and learning over the next one to five years. Covers institutional responses to generative AI, including policy development, AI literacy initiatives, and the evolving role of instructional designers. Includes case studies from leading institutions and a framework for evaluating the readiness of academic technology ecosystems.",
+    url: "https://library.educause.edu/resources/2024/5/2024-educause-horizon-report-teaching-and-learning-edition"
+  },
+  {
+    id: 7,
+    title: "Guidance for Generative AI in Education and Research",
+    source: "UNESCO",
+    date: "2023-09-07",
+    category: "reports",
+    summary: "UNESCO's authoritative guidance document provides recommendations for governments, institutions, and educators on the responsible integration of generative AI in education settings. Emphasizes human rights principles, pedagogical quality, teacher empowerment, and the need for age-appropriate safeguards for learners. Includes a readiness checklist and a set of policy questions institutions should address before deploying AI tools.",
+    url: "https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research"
+  },
+  {
+    id: 8,
+    title: "Generative AI in Education: A Quick Briefing for Practitioners",
+    source: "Jisc",
+    date: "2023-10-01",
+    category: "reports",
+    summary: "Jisc's practitioner-focused briefing offers a plain-language overview of generative AI capabilities, limitations, and immediate implications for UK higher and further education. Provides guidance on policy gaps, student and staff communication, academic integrity considerations, and suggestions for phased AI adoption. Intended for learning technologists, academic staff, and senior leaders without deep technical backgrounds.",
+    url: "https://www.jisc.ac.uk/guides/generative-ai-a-guide-for-professionals-working-in-education"
+  },
+  {
+    id: 9,
+    title: "How Should Higher Education Respond to AI Chatbots?",
+    source: "Brookings Institution",
+    date: "2023-03-01",
+    category: "reports",
+    summary: "Analyzes the policy and pedagogical challenges that ChatGPT and similar AI chatbots pose for colleges and universities, drawing on educational research and behavioral economics. Critiques blanket bans as ineffective and argues for a more nuanced approach centered on transparent AI policies, redesigned assignments, and student AI literacy education. Offers a set of evidence-based policy recommendations for institutional leaders and policymakers.",
+    url: "https://www.brookings.edu/articles/how-should-higher-education-respond-to-chatgpt/"
+  },
+  {
+    id: 10,
+    title: "Artificial Intelligence and the Future of Teaching and Learning",
+    source: "U.S. Dept. of Education / OTECH",
+    date: "2023-05-01",
+    category: "reports",
+    summary: "The U.S. Department of Education's Office of Educational Technology lays out a national vision for how AI can support — rather than supplant — educators and learners across the K–20 spectrum. Calls for centering equity, protecting student data, and investing in educator AI literacy as foundational conditions for responsible AI adoption. Provides a policy framework and guiding questions for institutions developing AI governance structures.",
+    url: "https://www2.ed.gov/documents/ai-report/ai-report.pdf"
+  },
+
+  // ── FRAMEWORKS ───────────────────────────────────────────────────────────
+  {
+    id: 11,
+    title: "AI Competency Framework for Students",
+    source: "UNESCO",
+    date: "2024-04-30",
+    category: "frameworks",
+    summary: "UNESCO's landmark competency framework defines the knowledge, skills, values, and attitudes students at all educational levels need to engage with AI effectively, ethically, and critically. Organized around five core areas — understanding AI, using AI, designing with AI, evaluating AI, and AI ethics — the framework is intended to guide curriculum design across disciplines and institutional contexts. Freely available in multiple languages with supporting guidance for curriculum developers.",
+    url: "https://www.unesco.org/en/digital-education/ai-competency-framework"
+  },
+  {
+    id: 12,
+    title: "AI Competency Framework for Teachers",
+    source: "UNESCO",
+    date: "2024-04-30",
+    category: "frameworks",
+    summary: "Companion to the student framework, this document defines what teachers across all disciplines need to know and be able to do in order to integrate AI responsibly into their pedagogical practice. Competencies span understanding AI concepts, designing AI-augmented learning experiences, modeling critical AI use for students, and navigating ethical and equity considerations. Provides proficiency levels from beginner to expert and examples of evidence for each competency.",
+    url: "https://www.unesco.org/en/digital-education/ai-competency-framework"
+  },
+  {
+    id: 13,
+    title: "ISTE AI in Education: Competencies for Educators",
+    source: "ISTE",
+    date: "2023-06-01",
+    category: "frameworks",
+    summary: "ISTE's framework extends its established Educator Standards to address the specific demands of teaching in an AI-rich environment, emphasizing responsible decision-making, human-centered AI design, and equitable access. Covers how educators can scaffold student AI literacy, co-create AI policies with learners, and critically evaluate AI tools before classroom adoption. Widely adopted by school districts and universities as the basis for professional development programming.",
+    url: "https://iste.org/areas-of-focus/ai-in-education"
+  },
+  {
+    id: 14,
+    title: "Jisc AI Skills in Higher Education: A National Framework",
+    source: "Jisc",
+    date: "2024-02-01",
+    category: "frameworks",
+    summary: "Jisc's national framework identifies the AI skills needed by students and staff in UK higher and further education, organized by role (student, academic, professional services) and proficiency level. Grounded in evidence from sector consultations, it maps AI skills to existing digital literacy frameworks and provides actionable guidance for institutions building AI literacy into curricula and staff development programs. Includes self-assessment tools and a maturity model for institutional AI capability.",
+    url: "https://www.jisc.ac.uk/ai"
+  },
+  {
+    id: 15,
+    title: "Responsible AI Use in Higher Education: Institutional Readiness Framework",
+    source: "EDUCAUSE",
+    date: "2024-03-15",
+    category: "frameworks",
+    summary: "A practical framework designed to help higher education institutions assess and advance their readiness for responsible AI adoption across governance, infrastructure, pedagogy, and culture. Introduces a five-stage maturity model — from AI-aware to AI-optimized — and provides diagnostic questions, indicators, and recommended actions for each stage. Particularly useful for provosts, CIOs, and academic technology teams leading institutional AI strategy.",
+    url: "https://library.educause.edu/topics/teaching-and-learning/artificial-intelligence-in-higher-education"
+  },
+
+  // ── RESOURCES ────────────────────────────────────────────────────────────
+  {
+    id: 16,
+    title: "AI Pedagogy Resources for Faculty: Harvard Bok Center",
+    source: "Harvard University",
+    date: "2024-01-10",
+    category: "resources",
+    summary: "Harvard's Derek Bok Center for Teaching and Learning offers a comprehensive, freely accessible collection of AI pedagogy resources including assignment redesign guides, classroom discussion protocols, student-facing syllabi language, and discipline-specific examples. Materials are grounded in learning science and developed with input from faculty across the arts, sciences, and professional schools. Updated continuously as new tools and pedagogical research emerge.",
+    url: "https://bokcenter.harvard.edu/ai"
+  },
+  {
+    id: 17,
+    title: "AI Tools in Teaching: Faculty Resource Hub",
+    source: "Carnegie Mellon University (Eberly Center)",
+    date: "2023-11-01",
+    category: "resources",
+    summary: "CMU's Eberly Center for Teaching Excellence provides faculty with research-grounded guidance on integrating AI tools into courses across disciplines, with specific attention to learning goals, assessment integrity, and student equity. Includes tool comparisons, recommended prompting strategies for educational use, and frameworks for transparent AI policies in course syllabi. Resources are organized by teaching challenge rather than by tool, making navigation intuitive for non-technical faculty.",
+    url: "https://www.cmu.edu/teaching/technology/aitools/"
+  },
+  {
+    id: 18,
+    title: "Educator Considerations for ChatGPT: A Practical Guide",
+    source: "OpenAI",
+    date: "2023-08-01",
+    category: "resources",
+    summary: "OpenAI's educator resource provides practical guidance on how teachers and instructors can responsibly introduce ChatGPT into learning environments, including suggestions for transparent use policies, creative pedagogical applications, and ways to foster critical AI literacy alongside tool access. Includes example prompts for common educational tasks and a discussion of the tool's current limitations relevant to academic contexts. Complemented by a student-facing version with guidance on responsible and honest use.",
+    url: "https://openai.com/educator-considerations-for-chatgpt/"
+  },
+  {
+    id: 19,
+    title: "MIT RAISE: Responsible AI for Social Empowerment and Education",
+    source: "MIT Media Lab / RAISE",
+    date: "2023-09-15",
+    category: "resources",
+    summary: "MIT RAISE develops open-source AI literacy curricula, research, and educator toolkits designed to make responsible AI education accessible at scale, from K–12 through higher education. The RAISE platform includes the DAILy AI curriculum, professional development courses for educators, and research on equity-centered AI education design. Resources are freely available and designed for remix, making them particularly accessible for community colleges and under-resourced institutions.",
+    url: "https://raise.mit.edu"
+  },
+  {
+    id: 20,
+    title: "Stanford HAI: AI+Education Resources for Researchers and Educators",
+    source: "Stanford Human-Centered AI Institute",
+    date: "2024-09-01",
+    category: "resources",
+    summary: "Stanford HAI's education hub aggregates research publications, policy briefs, recorded lectures, and practitioner guides focused on the intersection of AI and education across K–12 and higher education. Particular strengths include coverage of algorithmic bias in educational technology, AI-driven personalization, and governance frameworks for ed-tech procurement. Researchers can access working papers and datasets; educators can access course-ready materials and recorded faculty panels.",
+    url: "https://hai.stanford.edu/education"
+  },
+];
+
+// ── SORT by date descending ──────────────────────────────────────────────
+data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let activeCategory = 'all';
+let searchQuery    = '';
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function highlight(text, query) {
+  if (!query) return text;
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  return text.replace(re, '<mark style="background:#fef9c3;color:#713f12;border-radius:2px;padding:0 2px;">$1</mark>');
+}
+
+function buildCard(entry, query) {
+  const catLabel = CAT_LABELS[entry.category] || entry.category;
+  const title    = highlight(entry.title, query);
+  const source   = highlight(entry.source, query);
+  const summary  = highlight(entry.summary, query);
+
+  return `
+    <article class="card" role="article">
+      <div class="card-top">
+        <span class="cat-tag ${entry.category}">${catLabel}</span>
+        <span class="card-date">${formatDate(entry.date)}</span>
+      </div>
+      <div class="card-source">${source}</div>
+      <h2 class="card-title">${title}</h2>
+      <p class="card-summary">${summary}</p>
+      <div class="card-footer">
+        <a href="${entry.url}" target="_blank" rel="noopener noreferrer" class="read-link">
+          Read original
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+    </article>`;
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+function render() {
+  const q    = searchQuery.trim().toLowerCase();
+  const grid = document.getElementById('grid');
+
+  const filtered = data.filter(entry => {
+    const catOk   = activeCategory === 'all' || entry.category === activeCategory;
+    const searchOk = !q || [entry.title, entry.source, entry.summary].some(t => t.toLowerCase().includes(q));
+    return catOk && searchOk;
+  });
+
+  document.getElementById('visibleCount').textContent = filtered.length;
+  document.getElementById('entryCount').textContent   = `${data.length} entries`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">&#128269;</div>
+        <h3>No results found</h3>
+        <p>Try a different keyword or clear the category filter.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(e => buildCard(e, q)).join('');
+}
+
+// ── EVENTS ──��─────────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCategory = btn.dataset.cat;
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  render();
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+render();
+
+// ── AUTO-REFRESH every 6 hours ────────────────────────────────────────────
+const REFRESH_MS = 6 * 60 * 60 * 1000; // 6 hours in ms
+const startTime  = Date.now();
+
+function updateCountdown() {
+  const elapsed   = Date.now() - startTime;
+  const remaining = Math.max(0, REFRESH_MS - elapsed);
+
+  const h = Math.floor(remaining / 3_600_000);
+  const m = Math.floor((remaining % 3_600_000) / 60_000);
+  const s = Math.floor((remaining % 60_000) / 1000);
+
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('countdown').textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+setTimeout(() => location.reload(), REFRESH_MS);
+</script>
+</body>
+</html>
